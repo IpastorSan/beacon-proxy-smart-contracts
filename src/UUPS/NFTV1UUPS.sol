@@ -3,16 +3,17 @@ pragma solidity 0.8.20;
 
 import "@openzeppelin-contracts-upgradeable/contracts/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 
-//@dev This new version of the contract includes a new burn functionality
-contract NFTV2 is ERC721Upgradeable, OwnableUpgradeable {
+
+error MintPriceNotPaid();
+error SupplyExceeded();
+
+contract NFTV1UUPS is ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
     uint256 public immutable max_supply;
     uint256 public immutable price;
     uint256 public tokenId;
     string public baseTokenURI;
-
-    error MintPriceNotPaid();
-    error SupplyExceeded();
 
     constructor() {
         _disableInitializers();
@@ -37,7 +38,7 @@ contract NFTV2 is ERC721Upgradeable, OwnableUpgradeable {
 
     function mint(address to, uint256 amount) external onlyOwner {
         uint256 currentId = tokenId;
-        
+
         if(currentId + amount > max_supply) revert SupplyExceeded();
         if(msg.value != price * amount) revert MintPriceNotPaid();
 
@@ -57,11 +58,10 @@ contract NFTV2 is ERC721Upgradeable, OwnableUpgradeable {
      require(success, "Transfer failed.");
     }
 
-    function burn(uint256 token) public virtual {
-        _update(address(0), token, _msgSender());
-    }
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 
     function _baseURI() internal view override returns (string memory) {
        return baseTokenURI;
     }
+
 }

@@ -5,20 +5,20 @@ import "@openzeppelin-contracts-upgradeable/contracts/token/ERC721/ERC721Upgrade
 import "@openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 
 
-error MintPriceNotPaid();
-error SupplyExceeded();
-
 contract NFTV1 is ERC721Upgradeable, OwnableUpgradeable {
     uint256 public immutable max_supply;
     uint256 public immutable price;
     uint256 public tokenId;
     string public baseTokenURI;
 
-    constructor() ERC721("RandomNFT721", "RNFT") {
-        _disableInitializable();
+    error MintPriceNotPaid();
+    error SupplyExceeded();
+
+    constructor() {
+        _disableInitializers();
     }
 
-    function initializer(
+    function initialize(
         string memory name,
         string memory symbol,
         string memory baseURI,
