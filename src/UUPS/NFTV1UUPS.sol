@@ -4,14 +4,15 @@ pragma solidity 0.8.20;
 import "@openzeppelin-contracts-upgradeable/contracts/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "../interfaces/Inft.sol";
 
 
 error MintPriceNotPaid();
 error SupplyExceeded();
 
-contract NFTV1UUPS is ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
-    uint256 public immutable max_supply;
-    uint256 public immutable price;
+contract NFTV1UUPS is INFT, ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
+    uint256 public maxSupply;
+    uint256 public price;
     uint256 public tokenId;
     string public baseTokenURI;
 
@@ -23,23 +24,24 @@ contract NFTV1UUPS is ERC721Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
         string memory name,
         string memory symbol,
         string memory baseURI,
-        uint256 initial_max_supply, 
-        uint256 initial_price,
+        uint256 initialMaxSupply, 
+        uint256 initialPrice,
         address owner
     ) external initializer {
 
         __ERC721_init_unchained(name, symbol);
-        __Ownable_init_unchained(owner);
+        __Ownable_init_unchained();
 
         baseTokenURI = baseURI;
-        max_supply = initial_max_supply;
-        price = initial_price;
+        maxSupply = initialMaxSupply;
+        price = initialPrice;
+        transferOwnership(owner);
     }
 
-    function mint(address to, uint256 amount) external onlyOwner {
+    function mint(address to, uint256 amount) external payable onlyOwner {
         uint256 currentId = tokenId;
 
-        if(currentId + amount > max_supply) revert SupplyExceeded();
+        if(currentId + amount > maxSupply) revert SupplyExceeded();
         if(msg.value != price * amount) revert MintPriceNotPaid();
 
         tokenId += amount;

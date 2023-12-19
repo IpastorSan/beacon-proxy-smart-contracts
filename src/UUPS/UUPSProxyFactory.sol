@@ -3,6 +3,7 @@ pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "../interfaces/Inft.sol";
 
 error NonExistingProxy();
 error ZeroAddress();
@@ -10,7 +11,7 @@ contract UUPSProxyFactory is Ownable {
     uint256 private _proxyId;
     address private _implementation;
 
-    constructor (address implementation) Ownable(msg.sender) {
+    constructor (address implementation) {
         _implementation = implementation;
     }
 
@@ -22,7 +23,8 @@ contract UUPSProxyFactory is Ownable {
         uint256 price
     ) external returns (address) {
         ERC1967Proxy proxy = new ERC1967Proxy{salt: bytes32(_proxyId)}(_implementation, "");
-        proxy.initialize(name, symbol, baseURI, maxSupply, price, msg.sender);
+        INFT inft = INFT(address(proxy));
+        inft.initialize(name, symbol, baseURI, maxSupply, price, msg.sender);
         _proxyId++;
         return address(proxy);
     }

@@ -9,7 +9,7 @@ import "../src/NFTV2Implementation.sol";
 import "../src/BeaconProxyFactory.sol";
 
 contract CounterTest is Test {
-    address[3] public users;
+    address payable[] public users;
 
     function setUp() public {
         Utils utils = new Utils();
@@ -19,11 +19,11 @@ contract CounterTest is Test {
         vm.label(users[2], "bob");
 
         NFTV1 implementationV1 = new NFTV1();
-        UpgradeableBeacon beacon = new UpgradeableBeacon(address(implementationV1), msg.sender);
+        UpgradeableBeacon beacon = new UpgradeableBeacon(address(implementationV1));
         BeaconProxyFactory beaconProxyFactory = new BeaconProxyFactory(address(beacon));
     }
 
-    function test_Increment() public {
+    function testCreateProxy() public {
 
     }
 

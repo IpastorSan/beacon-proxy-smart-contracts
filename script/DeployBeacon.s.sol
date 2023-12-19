@@ -18,7 +18,7 @@ contract Deploy is Script {
         NFTV1 implementationV1 = new NFTV1();
         console2.log("Deployed NFTV! Implementation at address: %s", address(implementationV1));
 
-        UpgradeableBeacon beacon = new UpgradeableBeacon(address(implementationV1), msg.sender);
+        UpgradeableBeacon beacon = new UpgradeableBeacon(address(implementationV1));
     
         BeaconProxyFactory beaconProxyFactory = new BeaconProxyFactory(address(beacon));
 

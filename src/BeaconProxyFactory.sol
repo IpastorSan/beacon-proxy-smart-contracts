@@ -3,12 +3,13 @@ pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./interfaces/Inft.sol";
 
 contract BeaconProxyFactory is Ownable {
     uint256 private _proxyId;
     address private _beacon;
 
-    constructor (address beacon) Ownable(msg.sender) {
+    constructor (address beacon) {
         _beacon = beacon;
     }
 
@@ -20,7 +21,8 @@ contract BeaconProxyFactory is Ownable {
         uint256 price
     ) external returns (address) {
         BeaconProxy proxy = new BeaconProxy{salt: bytes32(_proxyId)}(_beacon, "");
-        proxy.initialize(name, symbol, baseURI, maxSupply, price, msg.sender);
+        INFT inft = INFT(address(proxy));
+        inft.initialize(name, symbol, baseURI, maxSupply, price, msg.sender);
         _proxyId++;
         return address(proxy);
     }
