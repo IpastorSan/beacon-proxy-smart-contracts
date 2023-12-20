@@ -52,7 +52,7 @@ source .env
 ```
 Run on local node
 ```bash
-forge script script/DeployLocal.s.sol:Deploy --fork-url http://localhost:8545  --private-key $PRIVATE_KEY_ANVIL_0 --broadcast 
+forge script script/DeployBeacon.s.sol:Deploy --fork-url http://localhost:8545  --private-key $PRIVATE_KEY_ANVIL_0 --broadcast 
 ```
 
 **Deploy to Sepolia**
@@ -65,7 +65,7 @@ source .env
 
 Deploy to Sepolia and verify
 ```bash
-forge script script/DeployTestnet.s.sol:Deploy --rpc-url $SEPOLIA_KEY  --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_KEY -vvvv
+forge script script/DeployBeacon.s.sol:Deploy --rpc-url $SEPOLIA_KEY  --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_KEY -vvvv
 ```
 # foundry-template
 # foundry-template
