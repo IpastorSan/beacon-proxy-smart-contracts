@@ -1,4 +1,4 @@
-# Simultaneaoud Upgrades using Beacon Proxy Pattern
+# Simultaneaous Upgrades using Beacon Proxy Pattern
 
 This is the companion repo for the article [Is it possible to create upgradeable Minimal Proxy Clone contracts?](https://blog.ignaciopastorsanchez.com/upgradeable-beacon-proxy)
 
