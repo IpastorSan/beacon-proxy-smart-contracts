@@ -1,4 +1,12 @@
-# Foundry Template
+# Simultaneaoud Upgrades using Beacon Proxy Pattern
+
+This is the companion repo for the article [Is it possible to create upgradeable Minimal Proxy Clone contracts?](https://blog.ignaciopastorsanchez.com/upgradeable-beacon-proxy)
+
+It shows how you can apply a Factory Pattern to create multiple copies of a given contract, and upgrade all of that copies simulteneously using the Beacon Proxy pattern.
+
+There is also an implementation using UUPS to show how this pattern is not feasible for simultaneous upgrades because the implementation address is stored in the Proxy storage.
+
+You can see a basic POC of how upgrades work with the Beacon Proxy in the `test/BeaconproxyFactory.t.sol` file.
 
 ## Instructions.
 Assuming you already have Rust and Foundry installed.
